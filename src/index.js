@@ -28,26 +28,39 @@ function fetchBreed() {
     fetch("https://dog.ceo/api/breeds/list/all")
         .then((response) => response.json())
         .then((breeds) => {
-            const doghash = breeds.message;
-            console.log(doghash);
-            for (const breed in doghash) {
-                if (doghash[breed].length == 0)
-                    renderBreed(breed);
-                else
-                  console.log(doghash[breed]);
+            const dogHash = breeds.message;
+            for (const breed in dogHash) {
+                if (dogHash[breed].length == 0) {
+                    renderBreed(breed, document.querySelector("#dog-breeds"));
+                }
+                else {
+                    let breedLi = renderBreed(breed, document.querySelector("#dog-breeds"))
+                    let subUl = document.createElement("ul")
+                    breedLi.appendChild(subUl)
+                        subBreeds = dogHash[breed]
+                        subBreeds.forEach(subBreed => renderBreed(subBreed, subUl))
+                  console.log(subBreeds);
+                }
             }
         }); 
 }
 
 fetchBreed();
 
-function renderBreed(breedName) {
+function renderBreed(breedName, elementUl) {
     let breedLi = document.createElement("li");
-    let breedlist = document.getElementById("dog-breeds");
-    breedlist.appendChild(breedLi);
+    // let breedlist = document.getElementById("dog-breeds");
+    elementUl.appendChild(breedLi);
     breedLi.innerText = breedName;
     breedLi.addEventListener("click", (changeColor) => {
         breedLi.style.color = "red";
     }); // whats up with the scope of breedLi
+    return breedLi
 }
 
+
+const selectElement = document.querySelector('#breed-dropdown');
+
+selectElement.addEventListener('change', () => {
+    
+})
